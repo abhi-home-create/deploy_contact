@@ -1,3 +1,5 @@
+import { config } from './config.js';  // Import the config object
+
 class FormValidator {
     constructor(form) {
         this.form = form;
@@ -65,7 +67,7 @@ function showFeedback(message, isError) {
         feedbackEl.style.display = 'none';
     }, 5000);
 }
-    import { config } from './config.js';  // Import the config object
+    
 
 document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('contactForm');
