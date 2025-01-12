@@ -1,16 +1,17 @@
 import { defineConfig } from 'vite'
-import dotenv from 'dotenv'
-
-dotenv.config()
 
 export default defineConfig({
   build: {
     outDir: 'dist',
+    sourcemap: true,
   },
   server: {
-    port: 3000
+    port: 3000,
+    open: true
   },
-  define: {
-    'process.env.GOOGLE_SCRIPT_URL': JSON.stringify(process.env.GOOGLE_SCRIPT_URL)
+  publicDir: 'public',
+  // Enable JSON imports
+  json: {
+    stringify: true
   }
 })

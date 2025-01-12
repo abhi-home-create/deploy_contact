@@ -28,7 +28,7 @@ jobs:
       - name: Replace environment variables
         uses: microsoft/variable-substitution@v1
         with:
-          files: 'src/js/config.js'
+          files: 'src/js/config.json'
         env:
           GOOGLE_SCRIPT_URL: ${{ secrets.GOOGLE_SCRIPT_URL }}
           
