@@ -1,4 +1,4 @@
-import { config } from './config.js';  // Import the config object
+import { config } from './config.js';
 
 class FormValidator {
     constructor(form) {
@@ -50,7 +50,6 @@ class RateLimiter {
 }
 
 function showFeedback(message, isError) {
-    // Create feedback element if it doesn't exist
     let feedbackEl = document.querySelector('.form-feedback');
     if (!feedbackEl) {
         feedbackEl = document.createElement('div');
@@ -62,18 +61,18 @@ function showFeedback(message, isError) {
     feedbackEl.className = `form-feedback ${isError ? 'error' : 'success'}`;
     feedbackEl.style.display = 'block';
     
-    // Hide feedback after 5 seconds
+    // Log feedback for debugging
+    console.log(`Form feedback: ${message} (${isError ? 'error' : 'success'})`);
+    
     setTimeout(() => {
         feedbackEl.style.display = 'none';
     }, 5000);
 }
-    
 
 document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('contactForm');
     
-    
-    const scriptUrl = config.GOOGLE_SCRIPT_URL || '';   // Get the Google Script URL from the config object
+    const scriptUrl = config.GOOGLE_SCRIPT_URL || '';
     
     if (!scriptUrl) {
         console.error('Google Script URL not configured');
@@ -132,23 +131,3 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
-
-function showFeedback(message, isError) {
-    let feedbackEl = document.querySelector('.form-feedback');
-    if (!feedbackEl) {
-        feedbackEl = document.createElement('div');
-        feedbackEl.className = 'form-feedback';
-        document.querySelector('.contact-form').insertAdjacentElement('beforeend', feedbackEl);
-    }
-    
-    feedbackEl.textContent = message;
-    feedbackEl.className = `form-feedback ${isError ? 'error' : 'success'}`;
-    feedbackEl.style.display = 'block';
-    
-    // Log feedback for debugging
-    console.log(`Form feedback: ${message} (${isError ? 'error' : 'success'})`);
-    
-    setTimeout(() => {
-        feedbackEl.style.display = 'none';
-    }, 5000);
-}
