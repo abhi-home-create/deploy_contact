@@ -1,26 +1,14 @@
 name: Deploy
-
 on:
   push:
     branches: [ main ]
-  pull_request:
-    branches: [ main ]
 
 jobs:
-  configure:
+  deploy:
     runs-on: ubuntu-latest
-    
     steps:
       - uses: actions/checkout@v2
       
-      - name: Create config file
+      - name: Replace script URL
         run: |
-          echo "{\"GOOGLE_SCRIPT_URL\": \"${{ secrets.GOOGLE_SCRIPT_URL }}\"}" > src/js/config.json
-      
-      - name: Commit config file
-        run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-          git add src/js/config.json
-          git commit -m "Update config with script URL" || echo "No changes to commit"
-          git push
+          sed -i 's|{{ secrets.GOOGLE_SCRIPT_URL }}|${{ secrets.GOOGLE_SCRIPT_URL }}|g' index.html

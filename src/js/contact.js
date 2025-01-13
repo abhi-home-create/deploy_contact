@@ -1,5 +1,3 @@
-import { config } from './config.js';
-
 class FormValidator {
     constructor(form) {
         this.form = form;
@@ -61,7 +59,6 @@ function showFeedback(message, isError) {
     feedbackEl.className = `form-feedback ${isError ? 'error' : 'success'}`;
     feedbackEl.style.display = 'block';
     
-    // Log feedback for debugging
     console.log(`Form feedback: ${message} (${isError ? 'error' : 'success'})`);
     
     setTimeout(() => {
@@ -71,15 +68,13 @@ function showFeedback(message, isError) {
 
 document.addEventListener('DOMContentLoaded', () => {
     const form = document.getElementById('contactForm');
+    // Remove config import and directly set the form action
+    form.action = window.GOOGLE_SCRIPT_URL || '';
     
-    const scriptUrl = config.GOOGLE_SCRIPT_URL || '';
-    
-    if (!scriptUrl) {
+    if (!form.action) {
         console.error('Google Script URL not configured');
         return;
     }
-    
-    form.action = scriptUrl;
 
     const validator = new FormValidator(form);
     const rateLimiter = new RateLimiter(3, 60000);
@@ -106,7 +101,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const formData = new FormData(form);
             const urlEncodedData = new URLSearchParams(formData).toString();
 
-            // Log the data being sent
             console.log('Sending data:', Object.fromEntries(formData));
 
             const response = await fetch(form.action, {
