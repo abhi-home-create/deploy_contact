@@ -7,32 +7,20 @@ on:
     branches: [ main ]
 
 jobs:
-  build-and-deploy:
+  configure:
     runs-on: ubuntu-latest
     
     steps:
       - uses: actions/checkout@v2
       
-      - name: Set up Node.js
-        uses: actions/setup-node@v2
-        with:
-          node-version: '16'
-          
-      - name: Install dependencies
-        run: npm install
-        
-      - name: Create env file
+      - name: Create config file
         run: |
-          echo "GOOGLE_SCRIPT_URL=${{ secrets.GOOGLE_SCRIPT_URL }}" > .env
-        
-      - name: Replace environment variables
-        uses: microsoft/variable-substitution@v1
-        with:
-          files: 'src/js/config.json'
-        env:
-          GOOGLE_SCRIPT_URL: ${{ secrets.GOOGLE_SCRIPT_URL }}
-          
-      - name: Build
-        run: npm run build
-        env:
-          GOOGLE_SCRIPT_URL: ${{ secrets.GOOGLE_SCRIPT_URL }}
+          echo "{\"GOOGLE_SCRIPT_URL\": \"${{ secrets.GOOGLE_SCRIPT_URL }}\"}" > src/js/config.json
+      
+      - name: Commit config file
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git add src/js/config.json
+          git commit -m "Update config with script URL" || echo "No changes to commit"
+          git push
